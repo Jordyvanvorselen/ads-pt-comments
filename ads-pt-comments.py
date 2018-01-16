@@ -79,6 +79,5 @@ def mentions_dates():
     return Response(json.dumps(filter_mentions_by_dates(get_timestamp_of_mentions(word), start_date, end_date)), mimetype='application/json')
 
 
-if (__name__ == '__main__'):
-    app.run(port=5001)
-    print("Comment API has succesfully started.")
+print("Comment API has succesfully started.")
+app.run(host="0.0.0.0", port=5001)
