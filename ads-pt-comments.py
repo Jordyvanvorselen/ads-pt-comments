@@ -30,6 +30,26 @@ def get_content_of_mentions(word):
     return json.loads(comment_response.text)["data"]["comments"]
 
 
+def get_timestamp_of_mentions(word):
+    comment_response = requests.post('http://192.168.27.170/graphql', json={'query': '''
+    {
+        comments(filter: "%s", options: "i") {
+            timestamp
+        }
+    }
+    ''' % (word)})
+
+    return json.loads(comment_response.text)["data"]["comments"]
+
+
+def filter_mentions_by_dates(mentions, start_date, end_date):
+    final_mentions = []
+    for mention in mentions:
+        if int(mention["timestamp"]) > int(start_date) and int(mention["timestamp"]) < int(end_date):
+            final_mentions.append(mention)
+    return final_mentions
+
+
 app = Flask(__name__)
 
 
@@ -47,6 +67,16 @@ def mentions_content():
         abort(400)
     word = request.args.get('word')
     return Response(json.dumps(get_content_of_mentions(word)), mimetype='application/json')
+
+
+@app.route('/mentionsdates', methods=['POST'])
+def mentions_dates():
+    if not request.args.get('word'):
+        abort(400)
+    word = request.args.get('word')
+    start_date = request.args.get('startdate')
+    end_date = request.args.get('enddate')
+    return Response(json.dumps(filter_mentions_by_dates(get_timestamp_of_mentions(word), start_date, end_date)), mimetype='application/json')
 
 
 if (__name__ == '__main__'):
