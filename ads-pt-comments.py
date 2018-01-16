@@ -47,7 +47,7 @@ def filter_mentions_by_dates(mentions, start_date, end_date):
     for mention in mentions:
         if int(mention["timestamp"]) > int(start_date) and int(mention["timestamp"]) < int(end_date):
             final_mentions.append(mention)
-    return final_mentions
+    return len(final_mentions)
 
 
 app = Flask(__name__)
