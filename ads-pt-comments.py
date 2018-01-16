@@ -80,5 +80,5 @@ def mentions_dates():
 
 
 if (__name__ == '__main__'):
-    app.run(port=5000)
+    app.run(port=5001)
     print("Comment API has succesfully started.")
