@@ -1,6 +1,7 @@
 import json
 import requests
 from flask import Flask, Response, request, abort
+from flask_cors import CORS
 
 print("Setting up comment API...")
 
@@ -51,6 +52,7 @@ def filter_mentions_by_dates(mentions, start_date, end_date):
 
 
 app = Flask(__name__)
+cors = CORS(app)
 
 
 @app.route('/mentionsamount', methods=['POST'])
